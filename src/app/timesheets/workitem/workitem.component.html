@@ -1,0 +1,39 @@
+<!--<p>Work Item Works</p>-->
+<h2>Create Work Item</h2>
+<form [formGroup]="createWorkItem" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="workItemCode">Work Item Code</label>
+        <input type="text" formControlName="workItemCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && wit.workItemCode.errors }" />
+        <div *ngIf="submitted && wit.workItemCode.errors" class="invalid-feedback">
+            <div *ngIf="wit.workItemCode.errors.required">Work Item Code Name is required</div>
+            <div *ngIf="wit.workItemCode.errors.minlength || wit.workItemCode.errors.maxlength ">Work Item should be of length 4</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="workItemDesc">Work Item Description</label>
+        <input type="text" formControlName="workItemDesc" class="form-control" [ngClass]="{ 'is-invalid': submitted && wit.workItemDesc.errors }" />
+        <div *ngIf="submitted && wit.workItemDesc.errors" class="invalid-feedback">
+            <div *ngIf="wit.workItemDesc.errors.required">Work Item Description is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="wItWorkTypeCode">Work Type Code :  </label>
+        <select formControlName="wItWorkTypeCode" [ngClass]="{ 'is-invalid': submitted && wit.wItWorkTypeCode.errors }">
+        <option *ngFor="let worktypeCode of worktypeCodes" value="{{worktypeCode.workTypeCode}}">{{worktypeCode.workTypeCode}}</option>
+        <div *ngIf="submitted && wit.wItWorkTypeCode.errors" class="invalid-feedback">
+            <div *ngIf="wit.wItWorkTypeCode.errors.required">Work Type Code is required. Create work Type code</div>
+        </div>
+        </select>
+       <!-- <input type="text" formControlName="wItWorkTypeDesc" class="form-control" [ngClass]="{ 'is-invalid': submitted && wit.wItWorkTypeCode.errors }" />-->
+        <div *ngIf="submitted && wit.wItWorkTypeCode.errors" class="invalid-feedback">
+            <div *ngIf="wit.wItWorkTypeCode.errors.required">Work Type Code is required. Create work Type code</div>
+        </div>
+    </div>
+           <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Create Work Item
+          </button>
+        <a routerLink="/timesheets" class="btn btn-link">Cancel</a>
+    </div>
+</form>

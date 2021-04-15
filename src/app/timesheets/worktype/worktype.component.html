@@ -1,0 +1,27 @@
+<p>
+WorkType Works</p>
+<h2>Create WorkType</h2>
+<form [formGroup]="createWorkType" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="workTypeCode">Work Type Code</label>
+        <input type="text" formControlName="workTypeCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && wt.workTypeCode.errors }" />
+        <div *ngIf="submitted && wt.workTypeCode.errors" class="invalid-feedback">
+            <div *ngIf="wt.workTypeCode.errors.required">Work Type Code is required</div>
+             <div *ngIf="wt.workTypeCode.errors.minlength || wt.workTypeCode.errors.maxlength ">Work type should be of length 3  </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="workTypeDesc">Work Type Description</label>
+        <input type="text" formControlName="workTypeDesc" class="form-control" [ngClass]="{ 'is-invalid': submitted && wt.workTypeDesc.errors }" />
+        <div *ngIf="submitted && wt.workTypeDesc.errors" class="invalid-feedback">
+            <div *ngIf="wt.workTypeDesc.errors.required">Work Type Description is required</div>
+        </div>
+    </div>
+           <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Create Work Type
+        </button>
+        <a routerLink="/timesheets" class="btn btn-link">Cancel</a>
+    </div>
+</form>

@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark" *ngIf="currentUser.usertype ==='Admin'">
+   <div class="navbar-nav">
+        <!--<a class="nav-item nav-link" routerLink="['/]">Home</a>-->
+        <a class="nav-item nav-link" [routerLink]="['/timesheets/worktype']">Create Work Type</a>
+        <a class="nav-item nav-link" [routerLink]="['/timesheets/workitem']">Create Work Item</a>
+        <a class="nav-item nav-link" [routerLink]="['/timesheets/assworkitem']">Assign Work Item</a>
+    </div>
+</nav>
+<p *ngIf="currentUser.usertype ==='User'">
+Submit timesheets For User!
+</p>
+<!--<h2>Create WorkType</h2>
+<form [formGroup]="createWorkType" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="workTypeCode">Work Type Code</label>
+        <input type="text" formControlName="workTypeCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.workTypeCode.errors }" />
+        <div *ngIf="submitted && f.workTypeCode.errors" class="invalid-feedback">
+            <div *ngIf="f.workTypeCode.errors.required">Work Type Code Name is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="workTypeDesc">Work Type Description</label>
+        <input type="text" formControlName="workTypeDesc" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.workTypeDesc.errors }" />
+        <div *ngIf="submitted && f.workTypeDesc.errors" class="invalid-feedback">
+            <div *ngIf="f.workTypeDesc.errors.required">Work Type Description is required</div>
+        </div>
+    </div>
+           <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Create Work Type
+        </button>
+        <!--<a routerLink="/login" class="btn btn-link">Cancel</a>-->
+    <!--</div>
+</form>
+<h2>Create Work Item</h2>
+<form [formGroup]="createWorkItem" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="workItemCode">Work Item Code</label>
+        <input type="text" formControlName="workItemCode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.workItemCode.errors }" />
+        <div *ngIf="submitted && f.workItemCode.errors" class="invalid-feedback">
+            <div *ngIf="f.workItemCode.errors.required">Work Item Code Name is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="workItemDesc">Work Item Description</label>
+        <input type="text" formControlName="workItemDesc" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.workItemDesc.errors }" />
+        <div *ngIf="submitted && f.workItemDesc.errors" class="invalid-feedback">
+            <div *ngIf="f.workItemDesc.errors.required">Work Item Description is required</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="wItWorkTypeDesc">Work Type Code</label>
+        <input type="text" formControlName="wItWorkTypeDesc" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.wItWorkTypeDesc.errors }" />
+        <div *ngIf="submitted && f.wItWorkTypeDesc.errors" class="invalid-feedback">
+            <div *ngIf="f.wItWorkTypeDesc.errors.required">Work Item Description is required</div>
+        </div>
+    </div>
+           <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Create Work Item
+        </button>
+        <!--<a routerLink="/login" class="btn btn-link">Cancel</a>-->
+    <!--</div>
+</form>-->

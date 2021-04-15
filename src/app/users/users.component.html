@@ -1,0 +1,41 @@
+<h1>Hi {{currentUser.firstName}}</h1>
+<p>You're logged in Successfully below are the users!!</p>
+<h3>All registered users:</h3>
+<table class='table'>
+<thead>
+<tr>
+<th>UserName</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>DOB</th>
+<th>Email</th>
+<th>User Type</th>
+</tr>
+</thead>
+<tbody *ngIf="currentUser.usertype ==='Admin' ">
+<tr *ngFor= 'let user of users'>
+<td><input type="text" [(ngModel)]="user.username" value="{{user.username}}"/></td>
+<td><input type="text" [(ngModel)]="user.username" value="{{user.firstName}}" /></td>
+<td><input type="text" [(ngModel)]="user.lastName" value="{{user.lastName}}"/></td>
+<td><input type="text" [(ngModel)]="user.email" value="{{user.email}}"/></td>
+<td>{{user.usertype}}</td>
+<td><a (click)="deleteUser(user.id)" class="text-danger">Delete</a></td>
+<td><a (click)="updateUser(user)"  class="text-danger">Update</a></td>
+</tr>
+</tbody>
+<tbody *ngIf="currentUser.usertype !=='Admin' ">
+<tr *ngFor= 'let user of users'>
+<td>{{user.username}}</td>
+<td>{{user.firstName}}</td>
+<td>{{user.lastName}}</td>
+<td>{{user.email}}</td>
+<td>{{user.usertype}}</td>
+</tr>
+</tbody>
+</table>
+<!--<ul>
+    <li *ngFor="let user of users">
+        {{user.username}} ({{user.firstName}} {{user.lastName}})
+        - <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>
+    </li>
+</ul>-->

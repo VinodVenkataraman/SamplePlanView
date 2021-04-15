@@ -1,0 +1,31 @@
+<div class="table-responsive-xl">
+<table class='table'>
+<thead>
+<tr>
+<th>Users</th>
+<th>Work Type Code Work Type Desc</th>
+<th>Work Item Code Work Item Desc</th>
+</tr>
+</thead>
+<tbody *ngIf="currentUser.usertype ==='Admin' ">
+<tr *ngFor= 'let user of users'>
+<td *ngIf="user.usertype === 'Admin' ">
+   <select>
+        <option *ngFor="let user of users" value="{{user.username}}">{{user.username}} {{user.firstname}} </option>
+     </select>
+</td>
+<td *ngIf="user.usertype === 'Admin' ">
+        <select>
+        <option *ngFor="let worktypeCode of worktypeCodes" value="{{worktypeCode.workTypeCode}}">{{worktypeCode.workTypeCode}} {{worktypeCode.workTypeDesc}} </option>
+         </select>
+</td>
+<td *ngIf="user.usertype === 'Admin' ">
+       <select>
+        <option *ngFor="let workitemCode of workitemCodes" value="{{workitemCode.workItemCode}}">{{workitemCode.workItemCode}} {{workitemCode.workItemDesc}}</option>
+         </select>
+</td>
+<td><a (click)="updateUser(user)"  class="text-danger">Assign Work Item</a></td>
+</tr>
+</tbody>
+</table>
+</div>
