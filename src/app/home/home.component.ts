@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 
 import { UserService, AuthenticationService, WorkTypeService } from '../_services';
+import { AssignService } from '../_services/assign.service';
 import { WorkItemService } from '../_services/workitem.service';
 
 @Component({ templateUrl: 'home.component.html' })
@@ -10,12 +11,13 @@ export class HomeComponent implements OnInit {
   users = [];
   worktypeCodes = [];
   workitemCodes = [];
-
+  assitems = [];
     constructor(
         private authenticationService: AuthenticationService,
       private userService: UserService,
       private workTypeService: WorkTypeService,
-        private workItemService: WorkItemService
+      private workItemService: WorkItemService,
+         private assignService: AssignService
     ) {
         this.currentUser = this.authenticationService.currentUserValue;
     }
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit {
       this.loadAllUsers();
       this.loadAllWorkType();
       this.loadAllWorkItems();
+      this.loadAllAssItems();
     }
 
     deleteUser(id: number) {
@@ -46,5 +49,10 @@ export class HomeComponent implements OnInit {
         this.workItemService.getAll()
             .pipe(first())
             .subscribe(workitemCodes => this.workitemCodes = workitemCodes);
+  }
+  private loadAllAssItems() {
+        this.assignService.getAll()
+            .pipe(first())
+            .subscribe(assitems => this.assitems = assitems);
     }
 }

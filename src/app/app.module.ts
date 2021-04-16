@@ -25,7 +25,7 @@ import { AssWorkitemComponent } from './timesheets/assworkitem/assworkitem.compo
     BrowserModule,
       FormsModule,
         ReactiveFormsModule,
-        HttpClientModule,
+    HttpClientModule,
         appRoutingModule
     ],
     declarations: [

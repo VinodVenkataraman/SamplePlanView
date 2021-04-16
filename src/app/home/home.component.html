@@ -22,3 +22,10 @@
         <!--- <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>-->
     </li>
 </ul>
+<h3>All Assigned work Items:</h3>
+<ul>
+    <li *ngFor="let assitem of assitems">
+        {{assitem.assWitUserName}} ({{assitem.assWitWorkDesc}})
+        <!--- <a (click)="deleteUser(user.id)" class="text-danger">Delete</a>-->
+    </li>
+</ul>

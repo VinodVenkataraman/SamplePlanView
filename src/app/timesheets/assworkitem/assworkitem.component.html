@@ -1,31 +1,56 @@
-<div class="table-responsive-xl">
+<h2>Create Work Item</h2>
+<form [formGroup]="assWorkItem" (ngSubmit)="onSubmit()">
+<div class="form-group">
+    <label for="assWitUserName" class="form-label">User UserName : : </label>
+        <select formControlName="assWitUserName" [ngClass]="{ 'is-invalid': submitted && asswit.assWitUserName.errors }">
+        <option *ngFor="let user of users" value="{{user.username}}">{{user.username}}</option>
+        <div *ngIf="submitted && asswit.assWitUserName.errors" class="invalid-feedback">
+            <div *ngIf="asswit.assWitUserName.errors.required">UserName is required. Create work Type code</div>
+        </div>
+        </select>
+</div>
+<div class="form-group">
+    <label for="assWitWorkDesc" class="form-label">Work Desc : :  </label>
+        <select formControlName="assWitWorkDesc" [ngClass]="{ 'is-invalid': submitted && asswit.assWitWorkDesc.errors }">
+        <option *ngFor="let workitemCode of workitemCodes" value="{{workitemCode.workItemDesc}}">{{workitemCode.workItemDesc}}</option>
+        <div *ngIf="submitted && asswit.assWitWorkDesc.errors" class="invalid-feedback">
+            <div *ngIf="asswit.assWitWorkDesc.errors.required">Work Item Code is required.</div>
+        </div>
+        </select>
+</div>
+  <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Assign Work Item
+          </button>
+        <a routerLink="/timesheets" class="btn btn-link">Cancel</a>
+    </div>
+ </form>
+<!--<div class="table-responsive-xl">
 <table class='table'>
 <thead>
 <tr>
-<th>Users</th>
-<th>Work Type Code Work Type Desc</th>
-<th>Work Item Code Work Item Desc</th>
+<th class="col-xs-1" >Users</th>
+<th class="col-xs-4" >Work Item Code Work Item Desc</th>
 </tr>
 </thead>
 <tbody *ngIf="currentUser.usertype ==='Admin' ">
 <tr *ngFor= 'let user of users'>
 <td *ngIf="user.usertype === 'Admin' ">
-   <select>
+   <select class ="form-select">
         <option *ngFor="let user of users" value="{{user.username}}">{{user.username}} {{user.firstname}} </option>
      </select>
 </td>
 <td *ngIf="user.usertype === 'Admin' ">
-        <select>
-        <option *ngFor="let worktypeCode of worktypeCodes" value="{{worktypeCode.workTypeCode}}">{{worktypeCode.workTypeCode}} {{worktypeCode.workTypeDesc}} </option>
-         </select>
-</td>
-<td *ngIf="user.usertype === 'Admin' ">
-       <select>
+       <select class ="form-select">
         <option *ngFor="let workitemCode of workitemCodes" value="{{workitemCode.workItemCode}}">{{workitemCode.workItemCode}} {{workitemCode.workItemDesc}}</option>
          </select>
 </td>
-<td><a (click)="updateUser(user)"  class="text-danger">Assign Work Item</a></td>
+<td *ngIf="user.usertype === 'Admin'">
+<a (click)="assUser(user,workitemCode)"  class="text-danger">Assign Work Item</a>
+</td>
 </tr>
 </tbody>
 </table>
 </div>
+-->

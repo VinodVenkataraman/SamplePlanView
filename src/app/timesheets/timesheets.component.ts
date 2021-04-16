@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { WorkTypeService, AlertService, AuthenticationService, UserService  } from '../_services';
 import { first } from 'rxjs/operators';
+import { AssignService } from '../_services/assign.service';
+import { DateValidate } from '../_helpers/custom.validators';
+import { TimesheetService } from '../_services/timesheet.service';
 
 @Component({
   selector: 'app-timesheets',
@@ -19,48 +22,60 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./timesheets.component.less']
 })
 export class TimesheetsComponent implements OnInit {
-  createWorkType: FormGroup;
+  submitTimeSheet: FormGroup;
   loading = false;
   submitted = false;
   currentUser: any;
-
+assitems = [];
   constructor(
         private formBuilder: FormBuilder,
         private router: Router,
     private authenticationService: AuthenticationService,
         private userService: UserService,
     private alertService: AlertService,
-        private workTypeService: WorkTypeService
+    private timesheetService: TimesheetService,
+            private assignService: AssignService
   ) {
 this.currentUser = this.authenticationService.currentUserValue;
   }
 
-ngOnInit() {
-  this.createWorkType = this.formBuilder.group({
-    workTypeCode: ['', Validators.required],
-    workTypeDesc: ['', Validators.required]
+  ngOnInit() {
+  this.loadAllAssItems();
+    this.submitTimeSheet = this.formBuilder.group({
+      subTimUser:[''],
+     subTimDate: ['', [Validators.required,DateValidate]],
+    subTimWorkItem: ['', Validators.required],
+    hours: ['', [Validators.required,Validators.maxLength(1),Validators.pattern('[0-9 ]*')]]
   });
-}
+  }
+  get subTim() { return this.submitTimeSheet.controls; }
 onSubmit() {
         this.submitted = true;
         // reset alerts on submit
         this.alertService.clear();
         // stop here if form is invalid
-        if (this.createWorkType.invalid) {
+        if (this.submitTimeSheet.invalid) {
             return;
         }
-
-        this.loading = true;
-       /* this.workTypeService.register(this.createWorkType.value)
+  this.submitTimeSheet.value.subTimUser = this.currentUser.username;
+          this.loading = true;
+       this.timesheetService.register(this.submitTimeSheet.value)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.alertService.success('Work Code Creation successful', true);
+                this.alertService.success('Time Sheet Submission successful', true);
+                this.loading = false;
+                this.router.navigate(['/timesheets'], { queryParams: { registered: true }});
                 },
                 error => {
                     this.alertService.error(error);
                     this.loading = false;
-                });*/
+                });
+}
+  private loadAllAssItems() {
+        this.assignService.getAll()
+            .pipe(first())
+            .subscribe(assitems => this.assitems = assitems);
     }
 }
 

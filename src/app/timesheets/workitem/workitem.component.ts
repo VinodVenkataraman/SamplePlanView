@@ -51,7 +51,7 @@ onSubmit() {
             .subscribe(
                 data => {
                 this.alertService.success('Work Item Creation successful', true);
-                 this.router.navigate(['/timesheets/worktype'], { queryParams: { registered: true }});
+                 this.router.navigate(['/timesheets'], { queryParams: { registered: true }});
                 },
                 error => {
                     this.alertService.error(error);

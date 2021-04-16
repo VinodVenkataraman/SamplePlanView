@@ -7,6 +7,8 @@ import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let wktypes = JSON.parse(localStorage.getItem('worktype')) || [];
 let wkitems = JSON.parse(localStorage.getItem('workitem')) || [];
+let asswkitems = JSON.parse(localStorage.getItem('assworkitem')) || [];
+let timesheets = JSON.parse(localStorage.getItem('timesheets')) || [];
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -39,7 +41,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
               case url.endsWith('/worktype') && method === 'GET':
                 return getWorkTypes();
               case url.endsWith('/workitem') && method === 'GET':
-                    return getWorkItems();
+                return getWorkItems();
+              case url.endsWith('/assworkitem') && method === 'GET':
+                return getAssWorkItems();
+                case url.endsWith('/assworkitem/register') && method === 'POST':
+                return registerWorkItemUser();
+              case url.endsWith('/timesheet/register') && method === 'POST':
+                return registerTimesheets();
                 default:
                     // pass through any requests not handled above
                     return next.handle(request);
@@ -90,9 +98,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       function updateUser() {
         if (!isLoggedIn()) return unauthorized();
         const user = body
-        let index = users.find(x => x.id).id;
-        users[index-1] = user;
-        localStorage.setItem('users', JSON.stringify(users));
+        //let index = users.find(x => x.id).id;
+        if (users.find(x => x.username === user.username)) {
+          users[user.id] = user;
+          localStorage.setItem('users', JSON.stringify(users));
+        }
         return ok();
       }
       function getWorkTypes() {
@@ -100,6 +110,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       }
       function getWorkItems() {
             return ok(wkitems);
+      }
+      function getAssWorkItems() {
+            return ok(asswkitems);
         }
       // helper functions
 
@@ -144,10 +157,28 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             wkitems.push(wkitem);
             localStorage.setItem('workitem', JSON.stringify(wkitems));
             return ok();
-        }
+      }
+      function registerWorkItemUser() {
+            const asswkitem = body
+        if (asswkitems.find(x => x.assWitUserName === asswkitem.assWitUserName && x.assWitWorkDesc === asswkitem.assWitWorkDesc)) {
+                 return error('Selected Work Item  for "' + asswkitem.assWitUserName + '" is assigned already')
+            }
+            asswkitem.id = asswkitems.length ? Math.max(...asswkitems.map(x => x.id)) + 1 : 1;
+            asswkitems.push(asswkitem);
+            localStorage.setItem('assworkitem', JSON.stringify(asswkitems));
+            return ok();
+      }
+      function registerTimesheets() {
+            const timesheet = body
+        if (timesheets.find(x => x.subTimUser === timesheet.subTimUser && x.subTimDate === timesheet.subTimDate && x.subTimWorkItem === timesheet.subTimWorkItem )) {
+                 return error('Time Sheet already submitted for the given period for "' + timesheet.subTimUser)
+            }
+            timesheets.id = timesheets.length ? Math.max(...timesheet.map(x => x.id)) + 1 : 1;
+            timesheets.push(timesheet);
+           localStorage.setItem('timesheets', JSON.stringify(timesheets));
+            return ok();
+      }
     }
-
-
 }
 
 export const fakeBackendProvider = {

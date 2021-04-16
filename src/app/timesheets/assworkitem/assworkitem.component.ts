@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import { WorkTypeService, AlertService, AuthenticationService, UserService  } from '../../_services';
 import { first } from 'rxjs/operators';
 import { WorkItemService } from 'src/app/_services/workitem.service';
+import { AssignService } from 'src/app/_services/assign.service';
 
 @Component({
   selector: 'app-timesheets',
   templateUrl : 'assworkitem.component.html'
 })
 export class AssWorkitemComponent implements OnInit {
-  createWorkItem: FormGroup;
+  assWorkItem: FormGroup;
   loading = false;
   submitted = false;
   currentUser: any;
@@ -24,7 +25,8 @@ export class AssWorkitemComponent implements OnInit {
         private router: Router,
         private authenticationService: AuthenticationService,
     private alertService: AlertService,
-      private userService: UserService,
+    private userService: UserService,
+      private assignService: AssignService,
         private workTypeService: WorkTypeService,
         private workItemService: WorkItemService
   ) {
@@ -35,30 +37,29 @@ this.currentUser = this.authenticationService.currentUserValue;
        this.loadAllUsers();
       this.loadAllWorkType();
       this.loadAllWorkItems();
-  this.createWorkItem = this.formBuilder.group({
-    workItemCode: ['', [Validators.required,Validators.minLength(4),Validators.maxLength(4)]],
-    workItemDesc: ['', Validators.required],
-    wItWorkTypeCode: ['', Validators.required]
-  });
+  this.assWorkItem = this.formBuilder.group({
+    assWitUserName: ['', Validators.required],
+    assWitWorkDesc: ['', Validators.required]
+    });
 
   }
-  get wit() { return this.createWorkItem.controls; }
+  get asswit() { return this.assWorkItem.controls; }
 onSubmit() {
         this.submitted = true;
         // reset alerts on submit
         this.alertService.clear();
         // stop here if form is invalid
-        if (this.createWorkItem.invalid) {
+        if (this.assWorkItem.invalid) {
             return;
         }
 
         this.loading = true;
-        this.workItemService.register(this.createWorkItem.value)
+        this.assignService.registerWit(this.assWorkItem.value)
             .pipe(first())
             .subscribe(
                 data => {
-                this.alertService.success('Work Item Creation successful', true);
-                 this.router.navigate(['/timesheets/worktype'], { queryParams: { registered: true }});
+                this.alertService.success('Assign Work Item successful', true);
+                 this.router.navigate(['/timesheets'], { queryParams: { registered: true }});
                 },
                 error => {
                     this.alertService.error(error);
@@ -79,7 +80,7 @@ onSubmit() {
         this.workItemService.getAll()
             .pipe(first())
             .subscribe(workitemCodes => this.workitemCodes = workitemCodes);
-    }
+  }
 }
 
 
